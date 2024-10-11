@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Devolución
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h3>Editar Devolución: {{ devolucion.id_devolucion }}</h3>
+
+        <form method="post" action="{% url 'editar_devolucion' devolucion.id_devolucion %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="producto">Producto</label>
+                <select class="form-control" id="producto" name="producto" required>
+                    {% for producto in productos %}
+                        <option value="{{ producto.id_producto }}" {% if producto.id_producto == devolucion.producto.id_producto %}selected{% endif %}>{{ producto.nombre_producto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ devolucion.cantidad }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="motivo">Motivo</label>
+                <textarea class="form-control" id="motivo" name="motivo" rows="3">{{ devolucion.motivo }}</textarea>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'devolucion' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

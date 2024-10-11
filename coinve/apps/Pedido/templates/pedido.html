@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Pedidos
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Mensajes -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-dark">{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <h3>Lista de Pedidos</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Producto</th>
+                    <th>Proveedor</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.id_orden_pedido }}</td>
+                    <td>{{ pedido.producto.nombre_producto }}</td>
+                    <td>{{ pedido.proveedor.nombre_proveedor }} {{ pedido.proveedor.apellidos_proveedor }}</td>
+                    <td>{{ pedido.cantidad }}</td>
+                    <td>
+                        <a href="{% url 'editar_pedido' pedido.id_orden_pedido %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url 'eliminar_pedido' pedido.id_orden_pedido %}" class="btn btn-danger btnEliminacion">Eliminar</a>
+                        {% if pedido.estado != 'Recibido' %}
+                            <a href="{% url 'recibir_pedido' pedido.id_orden_pedido %}" class="btn btn-success">Recibir</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Registrar Pedido</h3>
+        <form method="post" action="{% url 'pedido' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="producto_id">Producto</label>
+                <select class="form-control" id="producto_id" name="producto_id" required>
+                    <option value="">Seleccione un producto</option>
+                    {% for producto in productos %}
+                        <option value="{{ producto.id_producto }}">{{ producto.nombre_producto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="proveedor_id">Proveedor</label>
+                <select name="proveedor_id" class="form-control" required>
+                    {% for proveedor in proveedores %}
+                        <option value="{{ proveedor.id_proveedor }}" {% if proveedor == entrada.proveedor %}selected{% endif %}>
+                            {{ proveedor.nombre_proveedor }} {{ proveedor.apellidos_proveedor }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Registrar Pedido</button>
+                <a href="{% url 'pedido' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

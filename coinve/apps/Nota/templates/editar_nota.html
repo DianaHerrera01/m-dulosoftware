@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Editar Nota
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Mensajes -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong class="text-dark">{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulario para Editar Nota -->
+        <h3>Editar Nota ID: {{ nota.id_nota }}</h3>
+        <form method="post" action="{% url 'editar_nota' nota.id_nota %}">{% csrf_token %}
+            <div class="form-group">
+                <label for="factura_id">Factura</label>
+                <select class="form-control" id="factura_id" name="factura_id" required>
+                    <option value="">Seleccionar factura</option>
+                    {% for factura in facturas %}
+                        <option value="{{ factura.id_factura }}" {% if factura.id_factura == nota.factura.id_factura %}selected{% endif %}>{{ factura.id_factura }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tipo_nota_id">Tipo de Nota</label>
+                <select class="form-control" id="tipo_nota_id" name="tipo_nota_id" required>
+                    <option value="">Seleccionar tipo de nota</option>
+                    {% for tipo in tipos_nota %}
+                        <option value="{{ tipo.id_tipo_nota }}" {% if tipo.id_tipo_nota == nota.tipo_nota.id_tipo_nota %}selected{% endif %}>{{ tipo.nom_nota }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="motivo">Motivo</label>
+                <textarea class="form-control" id="motivo" name="motivo" rows="3" required>{{ nota.motivo }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="valor">Valor</label>
+                <input type="number" class="form-control" id="valor" name="valor" step="0.01" value="{{ nota.valor }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="productos_asociados"></label>
+                <div id="productos-container">
+                    {% for producto_nota in productos_asociados %}
+                    <div class="producto-item">
+                        <div class="form-group">
+                            <label for="producto_id_{{ forloop.counter }}">Producto</label>
+                            <select class="form-control" id="producto_id_{{ forloop.counter }}" name="producto_id">
+                                <option value="">Seleccionar producto</option>
+                                {% for producto in productos %}
+                                    <option value="{{ producto.id_producto }}" {% if producto.id_producto == producto_nota.producto.id_producto %}selected{% endif %}>{{ producto.nombre_producto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidad_{{ forloop.counter }}">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad_{{ forloop.counter }}" name="cantidad" min="1" value="{{ producto_nota.cantidad }}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>           
+
+            <button type="button" id="add-producto" class="btn btn-secondary">Agregar Producto</button>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'notas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+
+        <script>
+            // Script para agregar dinámicamente más campos de producto y cantidad
+            document.getElementById('add-producto').addEventListener('click', function() {
+                const container = document.getElementById('productos-container');
+                const newItem = document.querySelector('.producto-item').cloneNode(true);
+                newItem.querySelector('select').value = '';
+                newItem.querySelector('input').value = '';
+                container.appendChild(newItem);
+            });
+        </script>
+    </div>
+{% endblock %}

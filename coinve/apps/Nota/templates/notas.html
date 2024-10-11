@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Notas
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Mensajes -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-dark">{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <!-- Tabla y Formulario Nota -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Notas</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Nota</th>
+                            <th>Factura</th>
+                            <th>Motivo</th>
+                            <th>Tipo Nota</th>
+                            <th>Valor</th>
+                            <th class="actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nota in notas %}
+                        <tr>
+                            <td>{{ nota.id_nota }}</td>
+                            <td>{{ nota.factura.id_factura }}</td>
+                            <td>{{ nota.motivo }}</td>
+                            <td>{{ nota.tipo_nota.nom_nota }}</td>
+                            <td>${{ nota.valor }}</td>
+                            <td class="actions">
+                                <a href="{% url 'imprimir_nota' id_nota=nota.id_nota %}" class="btn btn-info">Imprimir Nota</a>
+                                <a href="{% url 'editar_nota' nota.id_nota %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'eliminar_nota' nota.id_nota %}" class="btn btn-danger btnEliminacion">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Formulario para Agregar Nota -->
+                <h3>Registrar Nota</h3>
+                <form method="post" action="{% url 'notas' %}">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="factura_id">Factura</label>
+                        <select class="form-control" id="factura_id" name="factura_id" required>
+                            <option value="">Seleccionar factura</option>
+                            {% for factura in facturas %}
+                                <option value="{{ factura.id_factura }}">{{ factura.id_factura }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="tipo_nota_id">Tipo de Nota</label>
+                        <select class="form-control" id="tipo_nota_id" name="tipo_nota_id" required>
+                            <option value="">Seleccionar tipo de nota</option>
+                            {% for tipo in tipos_nota %}
+                                <option value="{{ tipo.id_tipo_nota }}">{{ tipo.nom_nota }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="motivo">Motivo</label>
+                        <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="valor">Valor</label>
+                        <input type="number" class="form-control" id="valor" name="valor" step="0.01" required>
+                    </div>
+
+                    <div id="productos-container">
+                        <div class="producto-item">
+                            <div class="form-group">
+                                <label for="producto_id">Producto</label>
+                                <select class="form-control" name="producto_id">
+                                    <option value="">Seleccionar producto</option>
+                                    {% for producto in productos %}
+                                        <option value="{{ producto.id_producto }}">{{ producto.nombre_producto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" class="form-control" name="cantidad" min="1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+                    <button type="button" id="add-producto" class="btn btn-secondary">Agregar Producto</button>
+                    
+                
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{% url 'notas' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+                
+                <script>
+                    // Script para agregar dinámicamente más campos de producto y cantidad
+                    document.getElementById('add-producto').addEventListener('click', function() {
+                        const container = document.getElementById('productos-container');
+                        const newItem = document.querySelector('.producto-item').cloneNode(true);
+                        // Limpiar los valores de los campos clonados
+                        newItem.querySelector('select').value = '';
+                        newItem.querySelector('input').value = '';
+                        // Añadir el nuevo item al contenedor
+                        container.appendChild(newItem);
+                    });
+                </script>
+                
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}
+

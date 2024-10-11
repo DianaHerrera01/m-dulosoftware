@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Encabezado -->
+        <header>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static 'imagenes/LogCoinve.png' %}" alt="logo COINVE">
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'imagenes/TecnoFacil.png' %}" alt="logo Tienda">
+                </div>
+            </div>
+        </header>
+        <!-- Navegación -->
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Inicio</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInventario" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Inventario
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownInventario">
+                                    <a class="dropdown-item" href="{% url 'producto' %}">Producto</a>
+                                    <a class="dropdown-item" href="{% url 'proveedor' %}">Proveedor</a>
+                                    <a class="dropdown-item" href="{% url 'entradas_producto' %}">Entrada de producto</a>
+                                    <a class="dropdown-item" href="{% url 'pedido' %}">Pedido</a> 
+                                    <a class="dropdown-item"  href="{% url 'devolucion' %}">Devolución</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownVentas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ventas
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownVentas">
+                                    <a class="dropdown-item" href="{% url 'clientes' %}">Cliente</a>
+                                    <a class="dropdown-item" href="{% url 'facturas' %}">Factura</a>
+                                    <a class="dropdown-item" href="{% url 'notas' %}">Nota Crédito/Débito</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Contenido específico de la página -->
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <!-- Pie de página -->
+        <footer class="text-center" style="height: 120px; text-align: center; color: white; background-color: #0097B2;">
+            <p>
+                © 2024 COINVE. Todos los derechos reservados.<br>
+                Contáctenos<br>Línea gratuita: 01-800-123-4567<br>
+                Correo: info@coinve.com
+            </p>
+        </footer>
+    </div>
+
+    <!-- Scripts de Bootstrap y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        (function () {
+            const btnEliminacion = document.querySelectorAll(".btnEliminacion");
+
+            btnEliminacion.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const confirmacion = confirm('¿Seguro que deseas eliminar?');
+                    if (!confirmacion) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        })();
+    </script>
+   
+</body>
+</html>

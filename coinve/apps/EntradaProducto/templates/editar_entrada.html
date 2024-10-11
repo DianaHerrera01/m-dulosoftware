@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Editar Entrada Producto
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Editar entrada producto</h3>
+
+                <form method="POST" action="{% url 'actualizar_entrada' entrada.id_entrada %}">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" name="id_entrada" value="{{ entrada.id }}">
+                    
+                    <div class="form-group">
+                        <label for="pedido_id">Selecciona un pedido:</label>
+                        <select name="pedido_id" class="form-control" required>
+                            {% for pedido in pedidos %}
+                                <option value="{{ pedido.id_orden_pedido }}">{{ pedido }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="producto_id">Producto</label>
+                        <select name="producto_id" class="form-control" required>
+                            {% for producto in productos %}
+                                <option value="{{ producto.id_producto }}" {% if producto == entrada.producto %}selected{% endif %}>
+                                    {{ producto.nombre_producto }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="proveedor_id">Proveedor</label>
+                        <select name="proveedor_id" class="form-control" required>
+                            {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id_proveedor }}" {% if proveedor == entrada.proveedor %}selected{% endif %}>
+                                    {{ proveedor.nombre_proveedor }} {{ proveedor.apellidos_proveedor }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <select class="form-control" id="categoria" name="categoria" required>
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.categoriaID }}">{{ categoria.nom_categoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" name="cantidad" value="{{ entrada.cantidad }}" class="form-control" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="precio_unidad_compra">Precio por Unidad de Compra</label>
+                        <input type="number" class="form-control" id="precio_unidad_compra" name="precio_unidad_compra" step="0.01" value="{{ entrada.precio_unidad_compra }}" required>
+                    </div>                    
+                    
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" name="fecha" value="{{ entrada.fecha }}" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{% url 'entradas_producto' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Editar Cliente
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Editar Cliente</h3>
+                <form method="POST" action="{% url 'editar_cliente' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_cliente" value="{{ cliente.id_cliente }}">
+                    
+                    <div class="form-group">
+                        <label for="nombre_cliente">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="{{ cliente.nombre_cliente }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="apellidos_cliente">Apellidos del Cliente</label>
+                        <input type="text" class="form-control" id="apellidos_cliente" name="apellidos_cliente" value="{{ cliente.apellidos_cliente }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="correo">Correo</label>
+                        <input type="email" class="form-control" id="correo" name="correo" value="{{ cliente.correo }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo_documento">Tipo de Documento</label>
+                        <select class="form-control" id="tipo_documento" name="tipo_documento" required>
+                            {% for tipo in tipos_documento %}
+                                <option value="{{ tipo.id_tipo_docum }}">{{ tipo.nom_tipo_doc }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="documento_cli">Documento</label>
+                        <input type="number" class="form-control" id="documento_cli" name="documento_cli" value="{{ cliente.documento_cli }}" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ cliente.telefono }}" required>
+                    </div>
+                
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{% url 'clientes' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

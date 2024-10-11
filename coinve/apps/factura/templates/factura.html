@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Facturas
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Mensajes -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-dark">{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Tabla de Facturas -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Facturas</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Factura</th>
+                            <th>Fecha de Emisión</th>
+                            <th>Cliente</th>
+                            <th>Tipo Documento</th> 
+                            <th>Número Documento</th> 
+                            <th>Actividad Comercial</th>
+                            <th>NIT</th> 
+                            <th>Nombre del Negocio</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for factura in facturas %} 
+                        <tr>
+                            <td>{{ factura.id_factura }}</td>
+                            <td>{{ factura.fecha_emision }}</td>
+                            <td>{{ factura.cliente.nombre_cliente }} {{ factura.cliente.apellidos_cliente }}</td>
+                            <td>{{ factura.cliente.id_tipo_docum.nom_tipo_doc }}</td>
+                            <td>{{ factura.cliente.documento_cli }}</td>
+                            <td>{{ factura.actividad_comercial }}</td>
+                            <td>{{ factura.nit }}</td>
+                            <td>{{ factura.nombre_negocio}}</td>
+                            <td>
+                                <ul>
+                                    {% for detalle in factura.detallefactura_set.all %}
+                                    <li>{{ detalle.producto.nombre_producto }} - {{ detalle.cantidad }} unidades a ${{ detalle.precio_unidad_venta }} c/u</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>${{factura.precio_total_venta}}</td>  
+                            <td>
+                                <a href="{% url 'imprimir_factura_pdf' factura.id_factura %}" class="btn btn-info">Imprimir PDF</a>
+                                <a href="{% url 'eliminar_factura' factura.id_factura %}" class="btn btn-danger btnEliminacion">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h3>Crear Factura</h3>
+                <form method="POST" action="{% url 'crear_factura' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_cliente">Cliente</label>
+                        <select class="form-control" id="id_cliente" name="id_cliente" required>
+                            <option value="">Seleccionar cliente</option>
+                            {% for cliente in clientes %}
+                                <option value="{{ cliente.id_cliente }}">{{ cliente.nombre_cliente }} {{ cliente.apellidos_cliente }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                
+                    <div id="productos-container">
+                        <div class="producto-item">
+                            <div class="form-group">
+                                <label for="producto_id">Producto</label>
+                                <select class="form-control" name="producto_id" required>
+                                    <option value="">Seleccione un producto</option>
+                                    {% for producto in productos %}
+                                        <option value="{{ producto.id_producto }}">{{ producto.nombre_producto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" class="form-control" name="cantidad" required min="1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="add-producto" class="btn btn-secondary">Agregar otro producto</button>
+                    
+                    <div class="form-group">
+                        <label for="fecha_emision">Fecha de Emisión</label>
+                        <input type="date" class="form-control" id="fecha_emision" name="fecha_emision" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{% url 'facturas' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+                
+                <script>
+                    document.getElementById('add-producto').addEventListener('click', function() {
+                        var container = document.getElementById('productos-container');
+                        var newProduct = document.createElement('div');
+                        newProduct.classList.add('producto-item');
+                        newProduct.innerHTML = `
+                            <div class="form-group">
+                                <label for="producto_id">Producto</label>
+                                <select class="form-control" name="producto_id" required>
+                                    <option value="">Seleccione un producto</option>
+                                    {% for producto in productos %}
+                                        <option value="{{ producto.id_producto }}">{{ producto.nombre_producto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" class="form-control" name="cantidad" required min="1">
+                            </div>
+                        `;
+                        container.appendChild(newProduct);
+                    });
+                </script>         
+            </div>
+        </div>
+    </div>
+{% endblock %}

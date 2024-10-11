@@ -1,0 +1,256 @@
+/* Estilos para el encabezado */
+header {
+    background-color: #9FE2BF; 
+    padding: 20px 0; 
+    width: 100%; 
+}
+
+header .row {
+    display: flex;
+    justify-content: space-between; /* Distribuye el espacio entre las columnas */
+}
+
+header .col-md-6 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header img {
+    max-width: 100%; /* Ajusta las imagenes al ancho del contenedor */
+    height: auto; /* Mantiene la proporción de altura de las imágenes */
+}
+
+
+ /* Navegacion*/
+nav.navbar {
+    background-color: #5ac1b4; /* Color de fondo para la barra de navegacion */
+}
+.navbar-nav .nav-item:hover > .nav-link {
+    color: #000000;
+}
+
+.navbar-nav .nav-link {
+    color: white; /* Color del texto de los enlaces */
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #9FE2BF; /* Color de fondo al pasar el cursor */
+    color: #fff; /* Color del texto al pasar el cursor */
+}
+
+.dropdown-menu {
+    background-color: #5ac1b4; /* Color de fondo para los submenús */
+}
+
+.dropdown-menu .dropdown-item {
+    color: white; /* Color del texto en los submenús */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #9FE2BF; /* Color de fondo al pasar el cursor sobre los elementos del submenú */
+    color: #000000; /* Color del texto al pasar el cursor sobre los elementos del submenú */
+}
+
+.navbar-toggler {
+    border-color: #ffffff; /* Color del borde del botón de navegación */
+}
+
+.navbar-toggler-icon {
+    background-color: #5ac1b4; /* Color del icono del botón de navegación */
+}
+
+.navbar-collapse {
+    flex-grow: 1;
+}
+
+/* Estilos para el contenido principal */
+ 
+.section-content {
+    margin-top: 10px;
+}
+
+.section-content .sistema {
+    background-color: #FAFFFE;
+    padding: 30px;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido dentro de la sección */
+}
+
+.section-content .sistema h1 {
+    padding: 10px 0 0 10px;
+}
+
+.section-content .sistema p {
+    padding: 0 20px;
+    line-height: 1.5;
+    text-align: left;
+    max-width: 800px;
+}
+
+.section-content .sistema p img {
+    width: 240px;
+    height: 200px;
+    margin: 20px;
+    border: 2px solid black;
+    float: left;
+    border-radius: 3em;
+}
+
+.section-content .modulos {
+    display: grid;
+    grid-template-columns: 1fr; /* Cambia la cuadrícula a una sola columna */
+    width: 100%;
+    gap: 20px; /* Añade espacio entre los artículos */
+}
+
+.section-content .modulos article {
+    background: linear-gradient(#f8f7f5, #F3FFFE);
+    text-align: left; /* Mantiene el texto alineado a la izquierda */
+    padding: 15px;
+    width: 100%; /* Asegura que los artículos ocupen el 100% del contenedor */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+.section-content .modulos article h4 {
+    background-color: #0097B2;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    height: 2.5em;
+    font-size: 1.5rem; /* Tamaño de fuente para los subtítulos */
+}
+
+.section-content .modulos article p {
+    padding: 0 20px;
+    font-size: 1rem; /* Tamaño de fuente ajustable */
+    line-height: 1.5;
+}
+
+.section-content .modulos article img {
+    display: block; /* Asegura que la imagen se alinee como un bloque en línea */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+    width: 150px; /* Ancho de la imagen */
+    border-radius: 2em; /* Bordes redondeados */
+}
+
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #0097B2; /* Bordes de la tabla */
+}
+
+table thead {
+    background-color: #0097B2; /* Color de fondo de la cabecera */
+    color: white;
+}
+
+/* Colores alternos para las filas */
+table tbody tr:nth-child(even) {
+    background-color: #f8f7f5; /* Color de las filas pares */
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #FAFFFE; /* Color de las filas impares */
+}
+
+/* Efecto hover en las filas (excepto la columna de acciones) */
+table tbody tr:hover td:not(.actions) {
+    background-color: #9FE2BF; /* Color al pasar el mouse sobre la fila, excepto la columna de acciones */
+}
+
+/* Estilo para la columna de acciones */
+table tbody td.actions {
+    background-color: inherit; /* Hereda el color de fondo */
+}
+
+/* Estilo para la columna de acciones */
+table tbody td.actions {
+    display: flex; /* Usar flexbox para alinear botones en línea */
+    justify-content: center; /* Centra los botones horizontalmente */
+    padding: 0; /* Eliminar padding para que no haya espacio extra */
+}
+
+/* Estilo de los botones en la columna de acciones */
+table tbody td.actions a {
+    margin: 0 10px; /* Espacio entre botones (ajusta el valor según sea necesario) */
+    border: none; /* Elimina el borde predeterminado de los botones */
+    transition: background-color 0.3s; /* Transición suave para el color de fondo */
+}
+
+/* Efecto hover en los botones dentro de la columna de acciones */
+.btn-actions button:hover {
+    background-color: #FFC107; /* Color de fondo al pasar el mouse sobre los botones */
+}
+
+/* Alineación central para la tabla */
+table th, table td {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Estilos para el formulario */
+form {
+    background-color: #FCFCFC; 
+    border: 2px solid #5AA59B; 
+    padding: 20px;
+    margin: 20px auto; 
+    width: 50%; 
+    border-radius: 10px; 
+}
+
+form .form-control {
+    background-color: #FAFFFE; 
+    border: 1px solid #0097B2; 
+    color: #000; 
+}
+
+form .form-group {
+    margin-bottom: 15px; 
+}
+
+form label {
+    color: #000; 
+}
+
+.form-buttons {
+    display: flex; /* Utiliza flexbox para alinear los botones */
+    justify-content: center; /* Centrar los botones */
+    margin-top: 20px; /* Espacio encima de los botones */
+}
+
+button.btn {
+    background-color: #0097B2; /* Color de fondo del botón */
+    color: white; 
+    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px; /* Espacio entre botones */
+}
+
+button.btn:hover {
+    background-color: #5AA59B; 
+}
+
+h3 {
+    text-align: center;
+    margin-top: 30px; /* Espacio encima del título */
+    margin-bottom: 30px; /* Espacio debajo del título */
+}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Editar Pedido
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Editar Pedido</h3>
+
+                <form method="POST" action="{% url 'editar_pedido' pedido.id_orden_pedido %}">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" name="id_orden_pedido" value="{{ pedido.id_orden_pedido }}">
+                    
+                    <!-- Selección del Producto -->
+                    <div class="form-group">
+                        <label for="producto_id">Producto</label>
+                        <select name="producto_id" class="form-control" required>
+                            {% for producto in productos %}
+                                <option value="{{ producto.id_producto }}" {% if producto == pedido.producto %}selected{% endif %}>
+                                    {{ producto.nombre_producto }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Selección del Proveedor -->
+                    <div class="form-group">
+                        <label for="proveedor_id">Proveedor</label>
+                        <select name="proveedor_id" class="form-control" required>
+                            {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id_proveedor }}" {% if proveedor == entrada.proveedor %}selected{% endif %}>
+                                    {{ proveedor.nombre_proveedor }} {{ proveedor.apellidos_proveedor }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Cantidad -->
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ pedido.cantidad }}" required>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Actualizar Pedido</button>
+                        <a href="{% url 'pedido' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

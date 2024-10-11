@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura {{ factura.id_factura }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo para el encabezado h1 */
+        h1 {
+            background-color: #0097B2; /* Azul */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center; /* Centrado */
+            font-size: 24px; /* Tamaño de la letra */
+        }
+        h2 {
+            color: #0097B2; /* Azul */
+            margin-bottom: 20px;
+        }
+        h3 {
+            background-color: #0097B2; /* Verde azulado oscuro */
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center; /* Centrado */
+            font-size: 18px; /* Tamaño de la letra más pequeño que h1 */
+        }
+
+        p {
+            margin: 5px 0;
+            color: black; /* Color negro */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #0097B2; /* Azul */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #5ac1b4; /* Verde Azulado */
+            color: white;
+        }
+
+        /* Colores alternos para las filas */
+        tbody tr:nth-child(even) {
+            background-color: #9FE2BF; /* Verde Azulado Claro */
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #FAFFFE; 
+        }
+
+        .text-right {
+            text-align: right;
+            color: black;
+        }
+        h3.text-right {
+            background-color: #5AA59B;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: right;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Datos de la factura -->
+    <h1>{{ factura.nombre_negocio }}</h1>
+    <h2>Factura #{{ factura.id_factura }}</h2>
+    <p><strong>Fecha de emisión:</strong> {{ factura.fecha_emision }}</p>
+
+    <!-- Datos del contribuyente -->
+    <p><strong>Datos del contribuyente:</strong></p>
+    <p><strong>NIT:</strong> {{ factura.nit }}</p>
+    <p><strong>Nombre del negocio:</strong> {{ factura.nombre_negocio }}</p>
+    <p><strong>Actividad comercial:</strong> {{ factura.actividad_comercial }}</p>
+
+    <!-- Datos del cliente (transacción comercial) -->
+    <h3>Datos de la transacción comercial</h3>
+    <p><strong>Cliente:</strong> {{ factura.cliente.nombre_cliente }} {{ factura.cliente.apellidos_cliente }}</p>
+    <p><strong>Tipo de documento:</strong> {{ factura.tipo_documento.nom_tipo_doc }}</p>
+    <p><strong>Número de documento:</strong> {{ factura.numero_documento }}</p>
+
+    <!-- Detalles de la transacción comercial -->
+    <h3>Detalles de la transacción comercial</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.producto.nombre_producto }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>${{ detalle.precio_unidad_venta }}</td>
+                <td>${{ detalle.precio_total_venta }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Total -->
+    <h3 class="text-right">Total: ${{ factura.precio_total_venta }}</h3>
+</body>
+</html>

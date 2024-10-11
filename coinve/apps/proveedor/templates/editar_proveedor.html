@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    COINVE: TecnoFácil - Editar Proveedor
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <h3>Editar Proveedor</h3>
+                <form method="POST" action="{% url 'editar_proveedor' %}"> 
+                    {% csrf_token %}
+                    <input type="hidden" name="id_proveedor" value="{{ proveedor.id_proveedor }}">
+                    
+                    <div class="form-group">
+                        <label for="nombre_proveedor">Nombre del Proveedor</label>
+                        <input type="text" class="form-control" id="nombre_proveedor" name="nombre_proveedor" value="{{ proveedor.nombre_proveedor }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="apellidos_proveedor">Apellidos del Proveedor</label>
+                        <input type="text" class="form-control" id="apellidos_proveedor" name="apellidos_proveedor" value="{{ proveedor.apellidos_proveedor }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo</label>
+                        <input type="email" class="form-control" id="correo" name="correo" value="{{ proveedor.correo }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ proveedor.direccion }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ proveedor.telefono }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="producto_servicio">Producto o Servicio</label>
+                        <select class="form-control" id="producto_servicio" name="producto_servicio" required>
+                            {% for producto in productos_servicio %}
+                                <option value="{{ producto.id_producto_servicio }}" {% if producto.id_producto_servicio == proveedor.productoservicio_id %}selected{% endif %}>{{ producto.nom_producto_servicio }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{% url 'proveedor' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

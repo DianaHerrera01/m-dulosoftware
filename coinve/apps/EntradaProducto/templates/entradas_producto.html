@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Entradas de Producto
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+         <!-- Mensajes -->
+         {% if messages %}
+         {% for message in messages %}
+         <div class="alert alert-dismissible alert-success">
+             <button type="button" class="close" data-dismiss="alert">&times;</button>
+             <strong class="text-dark">{{ message }}</strong>
+         </div>
+         {% endfor %}
+         {% endif %}
+        <div class="row"></div>
+            <div class="col-md-12">
+
+                <h3>Lista de Entradas</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>ID Entrada</th>
+                            <th>Producto</th>
+                            <th>Proveedor</th>
+                            <th>Categoría</th>
+                            <th>Cantidad</th>
+                            <th>Precio Compra</th>
+                            <th>Precio Total</th>
+                            <th>Fecha</th>
+                            <th class="actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entrada in entradas %}
+                        <tr>
+                            <td>{{ entrada.pedido_id }}</td>
+                            <td>{{ entrada.id_entrada }}</td>
+                            <td>{{ entrada.producto.nombre_producto }}</td>
+                            <td>{{ entrada.proveedor.nombre_proveedor }} {{ entrada.proveedor.apellidos_proveedor }}</td>
+                            <td>{{ entrada.categoria.nom_categoria }}</td>
+                            <td>{{ entrada.cantidad }}</td>
+                            <td>{{ entrada.precio_unidad_compra }}</td>
+                            <td>{{ entrada.precio_total_compra }}</td>
+                            <td>{{ entrada.fecha }}</td>
+                            <td>
+                                <a href="{% url 'editar_entrada' entrada.id_entrada %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'eliminar_entrada_producto' entrada.id_entrada %}" class="btn btn-danger btnEliminacion" >Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Entradas de Producto</h3>
+
+                <form method="post" action="{% url 'entradas_producto' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="pedido_id">Selecciona un pedido:</label>
+                        <select class="form-control" name="pedido_id" required>
+                            {% for pedido in pedidos %}
+                                <option value="{{ pedido.id_orden_pedido }}">{{ pedido }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="producto_id">Producto</label>
+                        <select class="form-control" id="producto_id" name="producto_id" required>
+                            <option value="">Seleccione un producto</option>
+                            {% for producto in productos %}
+                                <option value="{{ producto.id_producto }}">{{ producto.nombre_producto }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="proveedor_id">Proveedor</label>
+                        <select class="form-control" id="proveedor_id" name="proveedor_id" required>
+                            <option value="">Seleccione un proveedor</option>
+                            {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id_proveedor }}">{{ proveedor.nombre_proveedor }} {{ proveedor.apellidos_proveedor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <select class="form-control" id="categoria" name="categoria" required>
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.categoriaID }}">{{ categoria.nom_categoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="precio_unidad_compra">Precio por Unidad de Compra</label>
+                        <input type="number" class="form-control" id="precio_unidad_compra" name="precio_unidad_compra" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" required>
+                    </div>
+                
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Registrar Entrada</button>
+                        <a href="{% url 'entradas_producto' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
